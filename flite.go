@@ -7,8 +7,10 @@ package flite
 // #include "flite.h"
 // cst_voice* register_cmu_us_kal(const char *voxdir);
 import "C"
-import "unsafe"
-import "fmt"
+import (
+	"fmt"
+	"unsafe"
+)
 
 var voice *C.cst_voice
 
