@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net"
-	"os/exec"
 
 	"golang.org/x/net/context"
 	flite "rpc-cgo"
@@ -45,9 +44,9 @@ func (server) Say(ctx context.Context, text *pb.Text) (*pb.Speech, error) {
 	if err := f.Close(); err != nil {
 		return nil, fmt.Errorf("could not close %s: %v", f.Name(), err)
 	}
-	cmd := exec.Command("flite", "-t", text.Text, "-o", f.Name())
+
 	if err := flite.TextToSpeech(f.Name(), text.Text); err != nil {
-		return nil, fmt.Errorf("flite failed: %s", data)
+		return nil, fmt.Errorf("flite failed: %v", err)
 	}
 
 	data, err := ioutil.ReadFile(f.Name())
