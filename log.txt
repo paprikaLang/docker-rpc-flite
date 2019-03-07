@@ -1,0 +1,43 @@
+
+1. docker: docker run --rm -v $(pwd)/data:/data -w /data paprikalang/say  flite -t "welcome to my house" -o output.wav 
+
+2. go: docker run --rm -v $(pwd)/data:/data -w /data paprikalang/say  "welcome to my house"
+
+go run main.go hello ->
+exec: flite executable file not found in $PATH
+所以将上面的命令编译再传到docker container, 就可以找到flite命令了
+
+
+3.protoc -I . say.proto --go_out=plugins=grpc:.
+---------------------------------------------------------
+go doc
+package say // import "rpc-flite/api"
+
+Package say is a generated protocol buffer package.
+
+It is generated from these files:
+
+    say.proto
+
+It has these top-level messages:
+
+    Text
+    Speech
+
+func RegisterTextToSpeechServer(s *grpc.Server, srv TextToSpeechServer)
+type Speech struct{ ... }
+type Text struct{ ... }
+type TextToSpeechClient interface{ ... }
+    func NewTextToSpeechClient(cc *grpc.ClientConn) TextToSpeechClient
+type TextToSpeechServer interface{ ... }
+---------------------------------------------------------
+go doc TextToSpeechServer
+type TextToSpeechServer interface {
+	Say(context.Context, *Text) (*Speech, error)
+}
+go doc TextToSpeechClient
+type TextToSpeechClient interface {
+        Say(ctx context.Context, in *Text, opts ...grpc.CallOption) (*Speech, error)
+}
+func NewTextToSpeechClient(cc *grpc.ClientConn) TextToSpeechClient
+4.
