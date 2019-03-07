@@ -8,6 +8,7 @@ package flite
 // cst_voice* register_cmu_us_kal(const char *voxdir);
 import "C"
 import "unsafe"
+import "fmt"
 
 var voice *C.cst_voice
 
