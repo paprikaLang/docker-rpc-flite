@@ -23,8 +23,9 @@ func TextToSpeech(path, text string) error {
 	if voice == nil {
 		return fmt.Errorf("could not find default voice")
 	}
-	ctext := C.CString("hello world")
-	cout := C.CString("out.wav")
+	ctext := C.CString(text)
+	voice = C.register_cmu_us_kal(nil)
+	cout := C.CString(path)
 	C.flite_text_to_speech(ctext, voice, cout)
 	C.free(unsafe.Pointer(ctext))
 	C.free(unsafe.Pointer(cout))
